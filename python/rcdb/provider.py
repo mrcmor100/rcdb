@@ -80,7 +80,7 @@ class RCDBProvider(object):
     # ------------------------------------------------
     # Connects to database using connection string
     # ------------------------------------------------
-    def connect(self, connection_string="mysql+pymysql://rcdb@127.0.0.1/rcdb", check_version=True):
+    def connect(self, connection_string="mysql+pymysql://rcdb@127.0.0.1/rcdb", check_version=False):
         """
         Connects to database using connection string
 

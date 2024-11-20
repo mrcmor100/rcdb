@@ -21,4 +21,4 @@ if __name__ == '__main__':
     if "RCDB_CONNECTION" in os.environ.keys():
         rcdb_web.app.config["SQL_CONNECTION_STRING"] = os.environ["RCDB_CONNECTION"]
 
-    rcdb_web.app.run()
+    rcdb_web.app.run(host='0.0.0.0', port=5000)

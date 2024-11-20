@@ -1,0 +1,13 @@
+FROM python:3.9-slim
+
+ENV RCDB_HOME=/app
+ENV PYTHONPATH="/app:/app/python"
+ENV PATH="$RCDB_HOME:$RCDB_HOME/bin:$PATH"
+
+WORKDIR /app
+
+COPY . /app
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+CMD ["python", "python/utilites/create_empty_db.py", "-c", "mysql+pymysql://rcdb:rcdbpassword@db/rcdb", "--i-am-sure", "--add-def-con"]

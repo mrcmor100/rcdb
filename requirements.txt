@@ -5,3 +5,6 @@ mako>=1.2.4
 # click 8.1 drops support of python 3.6
 click>=8.0.4
 sqlalchemy>=2
+flask
+#urllib2
+jinja2
