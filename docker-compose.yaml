@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: rcdb_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - RCDB_CONNECTION=mysql+pymysql://rcdb:rcdbpassword@db/rcdb
+    depends_on:
+      db:
+        condition: service_healthy
+      db_init:
+        condition: service_completed_successfully
+    volumes:
+      - .:/app
+    networks:
+      - rcdb_network
+
+  db:
+    image: mysql:5.7
+    container_name: rcdb_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: rcdb
+      MYSQL_USER: rcdb
+      MYSQL_PASSWORD: rcdbpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - rcdb_network
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  db_init:
+    build:
+      context: .
+      dockerfile: Dockerfile-db-init
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - RCDB_CONNECTION=mysql+pymysql://rcdb:rcdbpassword@db/rcdb
+    networks:
+      - rcdb_network
+
+volumes:
+  db_data:
+
+networks:
+  rcdb_network:
